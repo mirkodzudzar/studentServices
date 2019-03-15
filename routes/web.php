@@ -12,7 +12,21 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::resource('students', 'StudentsController');
+
+Route::group(['middleware' => 'auth'], function(){
+  Route::get('hello', function(){
+    return 'hello';
+  });
+  Route::get('world', function(){
+    return 'world';
+  });
+
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
