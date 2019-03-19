@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Student;
 use App\Subject;
+use App\Mark;
 use DB;
 
 class StudentsController extends Controller
@@ -18,7 +19,8 @@ class StudentsController extends Controller
     public function index()
     {
         $students = Student::orderBy('last_name', 'asc')->paginate(10);
-        return view('students.index')->with('students', $students);
+        $subjects = Subject::all();
+        return view('students.index')->with('students', $students)->with('subjects', $subjects);
     }
 
     /**
@@ -75,8 +77,9 @@ class StudentsController extends Controller
     public function show($id)
     {
         $student = Student::findOrFail($id);
-        return view('students.show')->with('student', $student);
-
+        $subjects = Subject::all();
+        $marks = Mark::all();
+        return view('students.show')->with('student', $student)->with('subjects', $subjects)->with('marks', $marks);
     }
 
     /**

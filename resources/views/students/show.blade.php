@@ -13,10 +13,20 @@
       <li>Personal identification numbre: <b>{{$student->personal_id_number}}</b></li>
       <li>Email: <b>{{$student->email}}</b></li>
       <li>Phone number: <b>{{$student->phone_number}}</b></li>
-    </ol>
+      </ol>
     <a href="/students/{{$student->id}}/edit">Edit student</a>
     {!!Form::open(['action' => ['StudentsController@destroy', $student->id], 'method' => 'DELETE'])!!}
       {{Form::submit('Delete student')}}
     {!!Form::close()!!}
     <hr>
+    <h2>Subjects</h2>
+    @foreach ($subjects as $subject)
+    <ol>
+      <b>{{$subject->name}}</b>
+      <li>ESPB: {{$subject->espb}}</li>
+      <li>Type: {{$subject->type}}</li>
+      <li>Professor: {{$subject->professor}}</li>
+      <li>Mark: </li>
+    </ol>
+    @endforeach
 @endsection

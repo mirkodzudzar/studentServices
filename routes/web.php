@@ -17,16 +17,8 @@ Route::get('/', function () {
 
 Route::resource('students', 'StudentsController');
 
-Route::group(['middleware' => 'auth'], function(){
-  Route::get('hello', function(){
-    return 'hello';
-  });
-  Route::get('world', function(){
-    return 'world';
-  });
-
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('subjects', 'SubjectsController');

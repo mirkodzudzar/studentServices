@@ -10,9 +10,14 @@ class Student extends Model
   protected $fillable = [
     'first_name', 'last_name', 'parent_name', 'gender', 'date_of_birth', 'place_of_birth', 'personal_id_number', 'email', 'phone_number'
   ];
-
-  public function subject()
-  {
-    return $this->hasMany('App\Subject');
-  }
+  //
+  // public function mark()
+  // {
+  //   return $this->belongsTo('App\Mark');
+  // }
+  //
+  // public function subject()
+  // {
+  //   return $this->belongsTo('App\Student');
+  // }
 }
