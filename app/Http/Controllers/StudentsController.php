@@ -18,7 +18,7 @@ class StudentsController extends Controller
      */
     public function __construct()
     {
-      $this->middleware('revalidate'); 
+      $this->middleware('revalidate');
       $this->middleware('auth');
     }
 
@@ -53,15 +53,15 @@ class StudentsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-          'first_name' => 'required',
-          'last_name' => 'required',
-          'parent_name' => 'required',
+          'first_name' => 'required|string|min:2',
+          'last_name' => 'required|string|min:2',
+          'parent_name' => 'required|string|min:2',
           'gender' => 'required',
-          'date_of_birth' => 'required',
-          'place_of_birth' => 'required',
-          'personal_id_number' => 'required',
-          'email' => 'required',
-          'phone_number' => 'required'
+          'date_of_birth' => 'required|string|max:11',
+          'place_of_birth' => 'required|string|max:255',
+          'personal_id_number' => 'required|integer|max:9999999999',
+          'email' => 'required|string|email|max:255|unique:users',//students
+          'phone_number' => 'required|string'
         ]);
 
         $student = new Student;
@@ -115,15 +115,15 @@ class StudentsController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-          'first_name' => 'required',
-          'last_name' => 'required',
-          'parent_name' => 'required',
+          'first_name' => 'required|string|min:2|max:255',
+          'last_name' => 'required|string|min:2|max:255',
+          'parent_name' => 'required|string|min:2|max:255',
           'gender' => 'required',
-          'date_of_birth' => 'required',
-          'place_of_birth' => 'required',
-          'personal_id_number' => 'required',
-          'email' => 'required',
-          'phone_number' => 'required'
+          'date_of_birth' => 'required|string|max:11',
+          'place_of_birth' => 'required|string|max:255',
+          'personal_id_number' => 'required|integer|min:1000000000|max:9999999999',
+          'email' => 'required|string|email|max:255|unique:users',//students
+          'phone_number' => 'required|integer'
         ]);
 
         $student = Student::find($id);

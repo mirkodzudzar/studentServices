@@ -47,10 +47,10 @@ class SubjectsController extends Controller
   public function store(Request $request)
   {
     $this->validate($request, [
-      'name' => 'required',
-      'espb' => 'required',
+      'name' => 'required|string|min:2|max:255',
+      'espb' => 'required|integer|min:1|max:10',
       'type' => 'required',
-      'professor' => 'required'
+      'professor' => 'required|string|min:2|max:255'
     ]);
 
     $subject = new Subject;
@@ -97,10 +97,10 @@ class SubjectsController extends Controller
   public function update(Request $request, $id)
   {
     $this->validate($request, [
-      'name' => 'required',
-      'espb' => 'required',
+      'name' => 'required|string|min:2|max:255',
+      'espb' => 'required|integer|min:1|max:10',
       'type' => 'required',
-      'professor' => 'required'
+      'professor' => 'required|string|min:2|max:255'
     ]);
 
     $subject = Subject::findOrFail($id);
