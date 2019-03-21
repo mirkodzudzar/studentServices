@@ -1,19 +1,25 @@
 @if(count($errors) > 0)
     @foreach($errors->all() as $error)
         <div>
-            {{$error}}
+          <span>
+            <strong>{{$error}}</strong>
+          </span>
         </div>
     @endforeach
 @endif
 
 @if(session('success'))
     <div>
-        {{session('success')}}
+      <span>
+        <strong>{{session('success')}}</strong>
+      </span>
     </div>
 @endif
 
 @if(session('error'))
     <div>
-        {{session('error')}}
+      <span>
+        <strong>{{session('error')}}</strong>
+      </span>
     </div>
 @endif

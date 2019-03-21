@@ -35,12 +35,18 @@
         {{Form::text('personal_id_number', '', ['placeholder' => 'Personal identification number'])}}
       </div>
       <div>
+        {{Form::label('phone_number', 'Phoone number')}}
+        {{Form::text('phone_number', '', ['placeholder' => 'Phone number'])}}
+      </div>
+      <div>
         {{Form::label('email', 'Email')}}
         {{Form::email('email', '', ['placeholder' => 'Email'])}}
       </div>
       <div>
-        {{Form::label('phone_number', 'Phoone number')}}
-        {{Form::text('phone_number', '', ['placeholder' => 'Phone number'])}}
+        {{Form::label('password', 'Password')}}
+        {{Form::password('password')}}
+      </div>
+      <div>
       </div>
       <div>
         {{Form::submit('Create Student')}}

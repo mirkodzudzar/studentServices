@@ -1,8 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  <a href="/subjects">Go Back</a>
-  <h1>Create New Subject</h1>
+  <h1>Edit Subject</h1>
     {!! Form::model($subject, ['method' => 'PATCH', 'action' => ['SubjectsController@update',$subject->id]]) !!}
       {{ csrf_field() }}
       <div>
@@ -23,7 +22,7 @@
         {{Form::text('professor', $subject->professor, ['placeholder' => 'Professor'])}}
       </div>
       <div>
-        {{Form::submit('Create Subject')}}
+        {{Form::submit('Edit Subject')}}
       </div>
     {!! Form::close() !!}
     </div>

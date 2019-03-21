@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\User;
 use App\Student;
 use App\Subject;
 use App\Mark;
@@ -20,6 +21,7 @@ class StudentsController extends Controller
     {
       $this->middleware('revalidate');
       $this->middleware('auth');
+      $this->middleware('is_admin', ['except' => 'index']);
     }
 
     /**
@@ -60,10 +62,18 @@ class StudentsController extends Controller
           'date_of_birth' => 'required|string|max:11',
           'place_of_birth' => 'required|string|max:255',
           'personal_id_number' => 'required|integer|max:9999999999',
-          'email' => 'required|string|email|max:255|unique:users',//students
-          'phone_number' => 'required|string'
+          'phone_number' => 'required|string',
+          'email' => 'required|string|email|max:255|unique:users',
+          'password' => 'required|string|min:6',//confirmed
         ]);
-
+        //creating user
+        $user = new User;
+        $user->name = $request->input('first_name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request['password']);
+        $user->type = User::DEFAULT_TYPE;
+        $user->save();
+        //creating student that is also new user
         $student = new Student;
         $student->first_name = $request->input('first_name');
         $student->last_name = $request->input('last_name');
@@ -150,6 +160,9 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
+        $user = User::find;
+        $user->delete();
+
         $student = Student::findOrFail($id);
         $student->delete();
 

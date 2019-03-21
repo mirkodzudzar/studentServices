@@ -15,7 +15,7 @@ class SubjectsController extends Controller
   public function __construct()
   {
     $this->middleware('revalidate');
-    $this->middleware('auth');
+    $this->middleware('is_admin');
   }
 
   /**
