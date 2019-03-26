@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Student;
 use App\Subject;
-use App\Mark;
+use App\Marking;
 use DB;
 
 class StudentsController extends Controller
@@ -21,7 +21,7 @@ class StudentsController extends Controller
     {
       $this->middleware('revalidate');
       $this->middleware('auth');
-      $this->middleware('is_admin', ['except' => 'index']);
+      $this->middleware('is_admin', ['except' => 'show']);
     }
 
     /**
@@ -99,8 +99,8 @@ class StudentsController extends Controller
     {
         $student = Student::findOrFail($id);
         $subjects = Subject::all();
-        $marks = Mark::all();
-        return view('students.show')->with('student', $student)->with('subjects', $subjects)->with('marks', $marks);
+        $marking = Marking::where('student_id', $id)->get();
+        return view('students.show')->with('student', $student)->with('subjects', $subjects)->with('marking', $marking);
     }
 
     /**
@@ -160,7 +160,7 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::find;
+        $user = User::find($id);
         $user->delete();
 
         $student = Student::findOrFail($id);

@@ -27,12 +27,16 @@
   <hr>
   <a href="subjects/create">Create new subject for all students</a>
   <h2>Subjects</h2>
-  @foreach ($subjects as $subject)
-  <ol>
-    <b><a href="/subjects/{{$subject->id}}">{{$subject->name}}</a></b>
-    <li>ESPB: {{$subject->espb}}</li>
-    <li>Type: {{$subject->type}}</li>
-    <li>Professor: {{$subject->professor}}</li>
-  </ol>
-  @endforeach
+  @if(count($subjects) > 0)
+    @foreach ($subjects as $subject)
+    <ol>
+      <b><a href="/subjects/{{$subject->id}}">{{$subject->name}}</a></b>
+      <li>ESPB: {{$subject->espb}}</li>
+      <li>Type: {{$subject->type}}</li>
+      <li>Professor: {{$subject->professor}}</li>
+    </ol>
+    @endforeach
+  @else
+    <p>No subjects found</p>
+  @endif
 @endsection

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use App\Student;
+
 
 class LoginController extends Controller
 {
@@ -25,7 +28,16 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/students';
+    // protected $redirectTo = '/students';
+
+    protected function authenticated(Request $request, $user)
+    {
+    if ( $user->isAdmin() ) {// do your margic here
+        return redirect('students');
+    }
+
+     return redirect()->route('students.show', [$user->id]);
+    }
 
     /**
      * Create a new controller instance.

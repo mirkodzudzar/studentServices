@@ -6,6 +6,7 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -27,7 +28,16 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/students';
+    // protected $redirectTo = '/students';
+
+    protected function authenticated(Request $request, $user)
+    {
+    if ( $user->isAdmin() ) {// do your margic here
+        return redirect('students');
+    }
+
+     return redirect()->route('students.show', [$user->id]);
+    }
 
     /**
      * Create a new controller instance.

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
 
 class ResetPasswordController extends Controller
 {
@@ -25,8 +26,17 @@ class ResetPasswordController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/students';
+    // protected $redirectTo = '/students';
 
+    protected function authenticated(Request $request, $user)
+    {
+    if ( $user->isAdmin() ) {// do your margic here
+        return redirect('students');
+    }
+
+     return redirect()->route('students.show', [$user->id]);
+    }
+    
     /**
      * Create a new controller instance.
      *
