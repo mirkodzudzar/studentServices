@@ -2,7 +2,7 @@
 
 @section('content')
   <a href="/students/create">Create new student</a><br><br>
-  @if(count($students) > 0)
+  @if(count($students) > 1)
   <table>
     <tr>
       <th>Last name</th>
@@ -13,11 +13,13 @@
     </tr>
     <tr>
       @foreach($students as $student)
+        @if($student->first_name !== 'admin')
         <td>{{ $student->last_name }}</td>
         <td>{{ $student->parent_name }}</td>
         <td>{{ $student->first_name }}</td>
         <td>{{$student->id}}</td>
         <td><a href="/students/{{$student->id}}">Show</a></td>
+        @endif
       </tr>
       @endforeach
     </table>

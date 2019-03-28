@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Subject;
+use App\Student;
+use Auth;
 
 class SubjectsController extends Controller
 {
@@ -28,6 +30,11 @@ class SubjectsController extends Controller
     //
   }
 
+  public function addUser(Request $request)
+  {
+    $subject = Subject::find($request->input('subject_id'));
+  }
+
   /**
    * Show the form for creating a new resource.
    *
@@ -35,7 +42,9 @@ class SubjectsController extends Controller
    */
   public function create()
   {
+      // $subject = Subject::where('student_id', Auth::user()->id)->get();
       return view('subjects.create');
+      // ->with('subject', $subject);
   }
 
   /**

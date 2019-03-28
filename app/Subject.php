@@ -6,8 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    public function marking()
+    protected $fillable = [
+      'name', 'espb', 'type', 'professor'
+    ];
+
+    public function students()
     {
-      return $this->belongsToMany('App\Marking');
+      return $this->belongsToMany('App\Student');
     }
 }

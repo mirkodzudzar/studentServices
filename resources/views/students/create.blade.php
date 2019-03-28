@@ -47,6 +47,10 @@
         {{Form::password('password')}}
       </div>
       <div>
+        {{Form::label('password_confirmation', 'Password confirmation')}}
+        {{Form::password('password_confirmation')}}
+      </div>
+      <div>
       </div>
       <div>
         {{Form::submit('Create Student')}}

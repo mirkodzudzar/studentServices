@@ -29,8 +29,8 @@ class Student extends Model
       'password', 'remember_token',
   ];
 
-  public function marking()
+  public function subjects()
   {
-    return $this->belongsToMany('App\Marking');
+    return $this->belongsToMany('App\Subject');
   }
 }

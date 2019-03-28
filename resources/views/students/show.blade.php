@@ -28,18 +28,12 @@
     @endif
     <hr>
     <h2>Subjects</h2>
-    @if(count($subjects) > 0)
-      @foreach ($subjects as $subject)
+    @if(count($marking) > 0)
       <ol>
-        <b>{{$subject->name}}</b>
-        <li>ESPB: {{$subject->espb}}</li>
-        <li>Type: {{$subject->type}}</li>
-        <li>Professor: {{$subject->professor}}</li>
         <li>Mark: @foreach($marking as $m)
           {{$m->mark}}
         @endforeach</li>
       </ol>
-      @endforeach
     @else
         <p>No subjects found</p>
     @endif

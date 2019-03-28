@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Student;
 use App\Subject;
-use App\Marking;
+use App\StudentSubject;
 use DB;
 
 class StudentsController extends Controller
@@ -64,7 +64,7 @@ class StudentsController extends Controller
           'personal_id_number' => 'required|integer|max:9999999999',
           'phone_number' => 'required|string',
           'email' => 'required|string|email|max:255|unique:users',
-          'password' => 'required|string|min:6',//confirmed
+          'password' => 'required|string|min:6|confirmed',
         ]);
         //creating user
         $user = new User;
@@ -98,9 +98,8 @@ class StudentsController extends Controller
     public function show($id)
     {
         $student = Student::findOrFail($id);
-        $subjects = Subject::all();
-        $marking = Marking::where('student_id', $id)->get();
-        return view('students.show')->with('student', $student)->with('subjects', $subjects)->with('marking', $marking);
+        $marking = StudentSubject::where('student_id', $id)->get();
+        return view('students.show')->with('student', $student)->with('marking', $marking);
     }
 
     /**
