@@ -30,11 +30,6 @@ class SubjectsController extends Controller
     //
   }
 
-  public function addUser(Request $request)
-  {
-    $subject = Subject::find($request->input('subject_id'));
-  }
-
   /**
    * Show the form for creating a new resource.
    *

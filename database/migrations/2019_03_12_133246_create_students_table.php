@@ -22,7 +22,7 @@ class CreateStudentsTable extends Migration
             $table->date('date_of_birth');
             $table->string('place_of_birth');
             $table->integer('personal_id_number')->unique();
-            $table->string('email')->unique();
+            $table->string('email')->references('email')->on('users');
             $table->string('phone_number')->unique();
             $table->timestamps();
         });

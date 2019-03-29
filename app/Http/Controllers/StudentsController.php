@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Student;
 use App\Subject;
-use App\StudentSubject;
 use DB;
 
 class StudentsController extends Controller
@@ -98,8 +97,7 @@ class StudentsController extends Controller
     public function show($id)
     {
         $student = Student::findOrFail($id);
-        $marking = StudentSubject::where('student_id', $id)->get();
-        return view('students.show')->with('student', $student)->with('marking', $marking);
+        return view('students.show')->with('student', $student);
     }
 
     /**

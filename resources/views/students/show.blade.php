@@ -28,13 +28,13 @@
     @endif
     <hr>
     <h2>Subjects</h2>
-    @if(count($marking) > 0)
+
       <ol>
-        <li>Mark: @foreach($marking as $m)
-          {{$m->mark}}
-        @endforeach</li>
+        <li>Mark:
+          @foreach($student->subject as $subject)
+            {{$subject->name}}
+          @endforeach
+        </li>
       </ol>
-    @else
-        <p>No subjects found</p>
-    @endif
+
 @endsection
