@@ -97,7 +97,8 @@ class StudentsController extends Controller
     public function show($id)
     {
         $student = Student::findOrFail($id);
-        return view('students.show')->with('student', $student);
+        $subjects = Subject::all();
+        return view('students.show')->with('student', $student)->with('subjects', $subjects);
     }
 
     /**

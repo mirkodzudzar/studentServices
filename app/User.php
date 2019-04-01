@@ -35,8 +35,8 @@ class User extends Authenticatable
       return $this->type === self::ADMIN_TYPE;
     }
 
-    // public function student()
-    // {
-    //     return $this->belongsTo('App\Student');
-    // }
+    public function student()
+    {
+        return $this->belongsTo('App\Student');
+    }
 }

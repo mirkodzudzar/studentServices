@@ -29,6 +29,11 @@ class Student extends Model
       'password', 'remember_token',
   ];
 
+  public function user()
+  {
+      return $this->hasOne('App\User', 'email');
+  }
+
   public function subjects()
   {
       return $this->belongsToMany('App\Subjects', 'student_subject', 'student_id', 'subject_id');

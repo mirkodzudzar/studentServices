@@ -19,4 +19,9 @@ Auth::routes();
 
 Route::resource('students', 'StudentsController');
 
-Route::resource('subjects', 'SubjectsController');
+Route::get('/subjects/create', 'SubjectsController@create');
+Route::post('/subjects', 'SubjectsController@store');
+Route::get('/subjects/{subject}', 'SubjectsController@show');
+Route::get('/subjects/{subject}/edit', 'SubjectsController@edit');
+Route::put('/subjects/{subject}', 'SubjectsController@update');
+Route::delete('/subjects/{subject}', 'SubjectsController@destroy');
