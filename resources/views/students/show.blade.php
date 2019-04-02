@@ -6,18 +6,7 @@
         <a href="/students">Go Back</a>
       @endif
     @endif
-    <h1>{{$student->last_name}} {{$student->first_name}}</h1>
-    <ol>
-      <li>First name: <b>{{$student->first_name}}</b></li>
-      <li>Last name: <b>{{$student->last_name}}</b></li>
-      <li>Parent name: <b>{{$student->parent_name}}</b></li>
-      <li>Gender: <b>{{$student->gender}}</b></li>
-      <li>Date of birth: <b>{{$student->date_of_birth}}</b></li>
-      <li>Place of birth: <b>{{$student->place_of_birth}}</b></li>
-      <li>Personal identification number: <b>{{$student->personal_id_number}}</b></li>
-      <li>Email: <b>{{$student->email}}</b></li>
-      <li>Phone number: <b>{{$student->phone_number}}</b></li>
-      </ol>
+    @include('inc.student')
     @if(!Auth::guest())
       @if(Auth::user()->email == 'admin@gmail.com')
         <a href="/students/{{$student->id}}/edit">Edit student</a>
@@ -29,11 +18,27 @@
     <hr>
     <h2>Subjects</h2>
     @if(count($subjects) > 0)
-      <ol>
-          @foreach($subjects as $subject)
-            <li>{{$subject->name}}</li>
-          @endforeach
-      </ol>
+    <table border="1">
+      <tr>
+        <th>ID</th>
+        <th>Subject</th>
+        <th>ESPB</th>
+        <th>Type</th>
+        <th>Professor</th>
+        <th>Mark</th>
+      </tr>
+      @foreach($student->subjects as $subject)
+        <tr>
+          <td>{{$subject->id}}</td>
+          <td>{{$subject->name}}</td>
+          <td>{{$subject->espb}}</td>
+          <td>{{$subject->type}}</td>
+          <td>{{$subject->professor}}</td>
+          <td>{{$subject->pivot->mark}}</td>
+          <td></td>
+      @endforeach
+      </tr>
+    </table>
     @else
         <p>No subjects found</p>
     @endif

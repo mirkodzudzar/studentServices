@@ -30,7 +30,7 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $students = Student::orderBy('last_name', 'asc')->paginate(10);
+        $students = Student::allStudents();
         $subjects = Subject::all();
         return view('students.index')->with('students', $students)->with('subjects', $subjects);
     }
@@ -62,7 +62,7 @@ class StudentsController extends Controller
           'place_of_birth' => 'required|string|max:255',
           'personal_id_number' => 'required|integer|max:9999999999',
           'phone_number' => 'required|string',
-          'email' => 'required|string|email|max:255|unique:users',
+          'email' => 'required|string|email|max:255|unique:students',
           'password' => 'required|string|min:6|confirmed',
         ]);
         //creating user
@@ -85,6 +85,11 @@ class StudentsController extends Controller
         $student->phone_number = $request->input('phone_number');
         $student->save();
 
+        $subject = Subject::all();
+        $user->type = User::DEFAULT_TYPE;
+        $subject->mark = Student::DEFAULT_TYPE;
+        $student->subjects()->attach($subject);
+
         return redirect('/students')->with('success', 'Student created!');
     }
 
@@ -96,7 +101,7 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
-        $student = Student::findOrFail($id);
+        $student = Student::findOrFail($id);//student()
         $subjects = Subject::all();
         return view('students.show')->with('student', $student)->with('subjects', $subjects);
     }
@@ -130,9 +135,15 @@ class StudentsController extends Controller
           'date_of_birth' => 'required|string|max:11',
           'place_of_birth' => 'required|string|max:255',
           'personal_id_number' => 'required|integer|min:1000000000|max:9999999999',
-          'email' => 'required|string|email|max:255|unique:users',//students
+          'email' => 'required|string|email|max:255|unique:students',//students
           'phone_number' => 'required|integer'
         ]);
+
+        $user = User::find($id);
+        $user->name = $request->input('first_name');
+        $user->email = $request->input('email');
+        $user->type = User::DEFAULT_TYPE;
+        $user->save();
 
         $student = Student::find($id);
         $student->first_name = $request->input('first_name');

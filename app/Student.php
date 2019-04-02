@@ -5,10 +5,13 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\Student as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
+use App\Auth;
 
 class Student extends Model
 {
   use Notifiable;
+
+  const DEFAULT_TYPE = 0;
 
   /**
    * The attributes that are mass assignable.
@@ -36,6 +39,13 @@ class Student extends Model
 
   public function subjects()
   {
-      return $this->belongsToMany('App\Subjects', 'student_subject', 'student_id', 'subject_id');
+      return $this->belongsToMany('App\Subject')
+      ->withPivot('mark', 'mark')
+    	->withTimestamps();
+  }
+
+  public static function allStudents()
+  {
+    return static::all();
   }
 }

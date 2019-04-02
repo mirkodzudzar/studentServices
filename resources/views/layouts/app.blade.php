@@ -35,9 +35,15 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="#">
                         {{ config('app.name', 'Student Services') }}
                     </a>
+                    @if(!Auth::guest())
+                      @if(Auth::user()->email !== 'admin@gmail.com')
+                      <a class="navbar-brand" href="/students/{{Auth::user()->id}}">Subjects</a>
+                      <a class="navbar-brand" href="">Exams</a>
+                      @endif
+                    @endif
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
