@@ -2,7 +2,7 @@
 
 @section('content')
   <h1>Edit Student</h1>
-  {!! Form::model($student, ['method' => 'PATCH', 'action' => ['StudentsController@update',$student->id]]) !!}
+  {!! Form::model($student, ['method' => 'POST', 'action' => ['StudentsController@update', $student->id]]) !!}
     {{ csrf_field() }}
     <div>
       {{Form::label('first_name', 'First name')}}
@@ -41,9 +41,9 @@
       {{Form::label('phone_number', 'Phoone number')}}
       {{Form::text('phone_number', $student->phone_number, ['placeholder' => 'Phone number'])}}
     </div>
-    <div>
+      {{Form::hidden('student_email', $student->email)}}
+      {{Form::hidden('_method', 'PUT')}}
       {{Form::submit('Edit student')}}
-    </div>
 
 	{!! Form::close() !!}
 @endsection

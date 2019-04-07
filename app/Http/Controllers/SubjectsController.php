@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Subject;
 use App\Student;
+use App\StudentSubject;
 use Auth;
 
 class SubjectsController extends Controller
@@ -18,6 +19,16 @@ class SubjectsController extends Controller
   {
     $this->middleware('revalidate');
     $this->middleware('is_admin');
+  }
+
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index()
+  {
+    //
   }
 
   /**
@@ -65,8 +76,9 @@ class SubjectsController extends Controller
    */
   public function show($id)
   {
+      $subjects = Subject::all();
       $subject = Subject::findOrFail($id);
-      return view('subjects.show')->with('subject', $subject);
+      return view('subjects.show')->with('subject', $subject)->with('subjects', $subjects);
   }
 
   /**
@@ -104,7 +116,7 @@ class SubjectsController extends Controller
     $subject->professor = $request->input('professor');
     $subject->save();
 
-    return redirect('/students')->with('success', 'Subject updated!');
+    return redirect()->route('students.show', [$user->id])->with('success', 'Subject updated!');
   }
 
   /**
@@ -115,6 +127,9 @@ class SubjectsController extends Controller
    */
   public function destroy($id)
   {
+    $student_subject = StudentSubject::where('subject_id', $id);
+    $student_subject->delete();
+
     $subject = Subject::findOrFail($id);
     $subject->delete();
 

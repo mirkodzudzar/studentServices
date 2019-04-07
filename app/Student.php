@@ -12,6 +12,8 @@ class Student extends Model
   use Notifiable;
 
   const DEFAULT_TYPE = 0;
+  const EXAM_TYPE = 'yes';
+
 
   /**
    * The attributes that are mass assignable.
@@ -34,7 +36,7 @@ class Student extends Model
 
   public function user()
   {
-      return $this->hasOne('App\User', 'email');
+      return $this->belongsTo('App\User', 'email');
   }
 
   public function subjects()

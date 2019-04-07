@@ -1,45 +1,63 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(!Auth::guest())
-      @if(Auth::user()->email == 'admin@gmail.com')
-        <a href="/students">Go Back</a>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      @if(!Auth::guest())
+        @if(Auth::user()->email == 'admin@gmail.com')
+          <a href="/students">Go Back</a>
+        @endif
       @endif
-    @endif
-    @include('inc.student')
-    @if(!Auth::guest())
-      @if(Auth::user()->email == 'admin@gmail.com')
-        <a href="/students/{{$student->id}}/edit">Edit student</a>
-        {!!Form::open(['action' => ['StudentsController@destroy', $student->id], 'method' => 'DELETE'])!!}
-          {{Form::submit('Delete student')}}
-        {!!Form::close()!!}
+      @include('inc.student')
+      @if(!Auth::guest())
+        @if(Auth::user()->email == 'admin@gmail.com')
+          <a href="/students/{{$student->id}}/edit">Edit student</a>
+          {!!Form::open(['action' => ['StudentsController@destroy', $student->id], 'method' => 'DELETE'])!!}
+            {{Form::hidden('student_email', $student->email)}}
+            {{Form::submit('Delete student')}}
+          {!!Form::close()!!}
+        @endif
       @endif
-    @endif
-    <hr>
-    <h2>Subjects</h2>
-    @if(count($subjects) > 0)
-    <table border="1">
-      <tr>
-        <th>ID</th>
-        <th>Subject</th>
-        <th>ESPB</th>
-        <th>Type</th>
-        <th>Professor</th>
-        <th>Mark</th>
-      </tr>
-      @foreach($student->subjects as $subject)
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      @if(!Auth::guest())
+        @if(Auth::user()->email == 'admin@gmail.com')
+          <a href="/exams/{{$student->id}}">Edit marks</a>
+        @endif
+      @endif
+      <h2>Reported exams</h2>
+      @if(count($subjects) > 0)
+      <table class="table">
         <tr>
-          <td>{{$subject->id}}</td>
-          <td>{{$subject->name}}</td>
-          <td>{{$subject->espb}}</td>
-          <td>{{$subject->type}}</td>
-          <td>{{$subject->professor}}</td>
-          <td>{{$subject->pivot->mark}}</td>
-          <td></td>
-      @endforeach
-      </tr>
-    </table>
-    @else
-        <p>No subjects found</p>
-    @endif
+          <th>ID</th>
+          <th>Subject</th>
+          <th>ESPB</th>
+          <th>Type</th>
+          <th>Professor</th>
+          <th>Mark</th>
+          <th>Exem</th>
+        </tr>
+        @foreach($student->subjects as $subject)
+          @if($subject->pivot->reported_exam != 'no')
+            <tr>
+              <td>{{$subject->id}}</td>
+              <th>{{$subject->name}}</th>
+              <td>{{$subject->espb}}</td>
+              <td>{{$subject->type}}</td>
+              <td>{{$subject->professor}}</td>
+              <td>
+                @if($subject->pivot->mark !== 0)
+                  {{$subject->pivot->mark}}
+                @endif
+              </td>
+              <td>Repotred</td>
+          @endif
+        @endforeach
+        </tr>
+      </table>
+      @else
+          <p>No subjects found</p>
+      @endif
+    </div>
+  </div>
 @endsection

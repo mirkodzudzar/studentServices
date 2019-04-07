@@ -40,8 +40,8 @@
                     </a>
                     @if(!Auth::guest())
                       @if(Auth::user()->email !== 'admin@gmail.com')
-                      <a class="navbar-brand" href="/students/{{Auth::user()->id}}">Subjects</a>
-                      <a class="navbar-brand" href="">Exams</a>
+                      <a class="navbar-brand" href="/students/{{$student->id}}">Subjects</a>
+                      <a class="navbar-brand" href="/exams/{{$student->id}}">Exams</a>
                       @endif
                     @endif
                 </div>
@@ -82,8 +82,10 @@
                 </div>
             </div>
         </nav>
-        @include('inc.messages')
-        @yield('content')
+        <div class="container-fluid">
+          @include('inc.messages')
+          @yield('content')
+        </div>
     </div>
 
     <!-- Scripts -->

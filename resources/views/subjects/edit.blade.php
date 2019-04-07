@@ -2,7 +2,7 @@
 
 @section('content')
   <h1>Edit Subject</h1>
-    {!! Form::model($subject, ['method' => 'PATCH', 'action' => ['SubjectsController@update',$subject->id]]) !!}
+    {!! Form::model($subject, ['method' => 'POST', 'action' => ['SubjectsController@update', $subject->id]]) !!}
       {{ csrf_field() }}
       <div>
         {{Form::label('name', 'Subject')}}
@@ -21,9 +21,8 @@
         {{Form::label('professor', 'Professor')}}
         {{Form::text('professor', $subject->professor, ['placeholder' => 'Professor'])}}
       </div>
-      <div>
+        {{Form::hidden('_method', 'PUT')}}
         {{Form::submit('Edit Subject')}}
-      </div>
     {!! Form::close() !!}
     </div>
   </form>

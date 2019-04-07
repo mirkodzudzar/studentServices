@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Student;
 use App\Subject;
+use App\StudentSubject;
+
 use DB;
 
 class StudentsController extends Controller
@@ -60,7 +62,7 @@ class StudentsController extends Controller
           'gender' => 'required',
           'date_of_birth' => 'required|string|max:11',
           'place_of_birth' => 'required|string|max:255',
-          'personal_id_number' => 'required|integer|max:9999999999',
+          'personal_id_number' => 'required|integer|min:1000000000|max:9999999999',
           'phone_number' => 'required|string',
           'email' => 'required|string|email|max:255|unique:students',
           'password' => 'required|string|min:6|confirmed',
@@ -85,10 +87,10 @@ class StudentsController extends Controller
         $student->phone_number = $request->input('phone_number');
         $student->save();
 
-        $subject = Subject::all();
-        $user->type = User::DEFAULT_TYPE;
-        $subject->mark = Student::DEFAULT_TYPE;
-        $student->subjects()->attach($subject);
+        // $subject = Subject::all();
+        // $user->type = User::DEFAULT_TYPE;
+        // $subject->mark = Student::DEFAULT_TYPE;
+        // $student->subjects()->attach($subject);
 
         return redirect('/students')->with('success', 'Student created!');
     }
@@ -139,7 +141,7 @@ class StudentsController extends Controller
           'phone_number' => 'required|integer'
         ]);
 
-        $user = User::find($id);
+        $user = User::where('email', $request->student_email);
         $user->name = $request->input('first_name');
         $user->email = $request->input('email');
         $user->type = User::DEFAULT_TYPE;
@@ -167,13 +169,16 @@ class StudentsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $user = User::find($id);
-        $user->delete();
+        $student_subject = StudentSubject::where('student_id', $id);
+        $student_subject->delete();
 
         $student = Student::findOrFail($id);
         $student->delete();
+
+        $user = User::where('email', $request->student_email);
+        $user->delete();
 
         return redirect('/students')->with('success', 'Student deleted!');
     }
