@@ -1,4 +1,5 @@
 <h1>{{$student->last_name}} {{$student->first_name}}</h1>
+<h4>{{$student->department->name}}</h4>
 <ol>
   <li>First name: <b>{{$student->first_name}}</b></li>
   <li>Last name: <b>{{$student->last_name}}</b></li>

@@ -6,6 +6,12 @@
     {!!Form::open(['action' => 'StudentsController@store', 'method' => 'POST'])!!}
       {{ csrf_field() }}
       <div>
+        {{Form::label('department', 'Department')}}<br>
+        @foreach($departments as $department)
+          {{$department->name}} {{Form::radio('department_id', $department->id, true)}}<br>
+        @endforeach
+      </div>
+      <div>
         {{Form::label('first_name', 'First name')}}
         {{Form::text('first_name', '', ['placeholder' => 'First name'])}}
       </div>
@@ -19,8 +25,8 @@
       </div>
       <div>
         {{Form::label('gender', 'Gender')}}<br>
-        Male {{Form::radio('gender', 'Male', true)}}
-        Female {{Form::radio('gender', 'Female')}}
+        Male {{Form::radio('gender', $male, true)}}
+        Female {{Form::radio('gender', $female)}}
       </div>
       <div>
         {{Form::label('date_of_birth', 'Date of birth')}}

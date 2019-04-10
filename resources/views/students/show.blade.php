@@ -2,7 +2,7 @@
 
 @section('content')
   <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
       @if(!Auth::guest())
         @if(Auth::user()->email == 'admin@gmail.com')
           <a href="/students">Go Back</a>
@@ -19,7 +19,7 @@
         @endif
       @endif
     </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
       @if(!Auth::guest())
         @if(Auth::user()->email == 'admin@gmail.com')
           <a href="/exams/{{$student->id}}">Edit marks</a>
@@ -38,7 +38,6 @@
           <th>Exem</th>
         </tr>
         @foreach($student->subjects as $subject)
-          @if($subject->pivot->reported_exam != 'no')
             <tr>
               <td>{{$subject->id}}</td>
               <th>{{$subject->name}}</th>
@@ -50,8 +49,11 @@
                   {{$subject->pivot->mark}}
                 @endif
               </td>
-              <td>Repotred</td>
-          @endif
+              <td>
+                @if($subject->pivot->reported_exam == 'yes')
+                  <p>Repotred</p>
+                @endif
+              </td>
         @endforeach
         </tr>
       </table>

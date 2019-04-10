@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use App\Student;
+use Auth;
 
 
 class LoginController extends Controller
@@ -32,11 +33,13 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-    if ( $user->isAdmin() ) {// do your margic here
-        return redirect('students');
-    }
+      $email = Auth::user()->email;
+      $student_id = Student::where('email', $email)->value('id');
 
-     return redirect()->route('students.show', [$user->id]);
+      if ( $user->isAdmin() ) {// do your margic here
+          return redirect('students');
+      }
+       return redirect()->route('students.show', [$student_id]);
     }
 
     /**

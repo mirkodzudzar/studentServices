@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
+use App\Student;
+use Auth;
 
 class ResetPasswordController extends Controller
 {
@@ -30,13 +32,15 @@ class ResetPasswordController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-    if ( $user->isAdmin() ) {// do your margic here
-        return redirect('students');
+      $email = Auth::user()->email;
+      $student_id = Student::where('email', $email)->value('id');
+
+      if ( $user->isAdmin() ) {// do your margic here
+          return redirect('students');
+      }
+       return redirect()->route('students.show', [$student_id]);
     }
 
-     return redirect()->route('students.show', [$user->id]);
-    }
-    
     /**
      * Create a new controller instance.
      *

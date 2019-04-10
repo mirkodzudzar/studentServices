@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use App\User;
 use App\Student;
 use App\Subject;
+use App\Department;
 use App\StudentSubject;
 
 use DB;
@@ -20,6 +21,9 @@ class StudentsController extends Controller
      */
     public function __construct()
     {
+      //revalidate stops you going back if you are logged out
+      //auth stops unlloged users to do enything
+      //if you are not admin, you can just visit you profile
       $this->middleware('revalidate');
       $this->middleware('auth');
       $this->middleware('is_admin', ['except' => 'show']);
@@ -32,7 +36,8 @@ class StudentsController extends Controller
      */
     public function index()
     {
-        $students = Student::allStudents();
+        //showing all students and all subjects(evry student has every subject!!!)
+        $students = Student::allStudents()->sortBy('department_id');
         $subjects = Subject::all();
         return view('students.index')->with('students', $students)->with('subjects', $subjects);
     }
@@ -44,7 +49,11 @@ class StudentsController extends Controller
      */
     public function create()
     {
-        return view('students.create');
+        //showing create form
+        $male = Student::STUDENT_MALE;
+        $female = Student::STUDENT_FEMALE;
+        $departments = Department::all();
+        return view('students.create')->with('departments', $departments)->with('male', $male)->with('female', $female);
     }
 
     /**
@@ -55,6 +64,7 @@ class StudentsController extends Controller
      */
     public function store(Request $request)
     {
+        //WORKING
         $this->validate($request, [
           'first_name' => 'required|string|min:2',
           'last_name' => 'required|string|min:2',
@@ -62,7 +72,7 @@ class StudentsController extends Controller
           'gender' => 'required',
           'date_of_birth' => 'required|string|max:11',
           'place_of_birth' => 'required|string|max:255',
-          'personal_id_number' => 'required|integer|min:1000000000|max:9999999999',
+          'personal_id_number' => 'required|integer|min:1|max:9999999999',
           'phone_number' => 'required|string',
           'email' => 'required|string|email|max:255|unique:students',
           'password' => 'required|string|min:6|confirmed',
@@ -73,7 +83,7 @@ class StudentsController extends Controller
         $user->email = $request->input('email');
         $user->password = bcrypt($request['password']);
         $user->type = User::DEFAULT_TYPE;
-        $user->save();
+
         //creating student that is also new user
         $student = new Student;
         $student->first_name = $request->input('first_name');
@@ -85,12 +95,15 @@ class StudentsController extends Controller
         $student->personal_id_number = $request->input('personal_id_number');
         $student->email = $request->input('email');
         $student->phone_number = $request->input('phone_number');
+        $student->department_id = $request->department_id;
+
+        $user->save();
         $student->save();
 
-        // $subject = Subject::all();
-        // $user->type = User::DEFAULT_TYPE;
-        // $subject->mark = Student::DEFAULT_TYPE;
-        // $student->subjects()->attach($subject);
+        $subject = Subject::all();
+        $user->type = User::DEFAULT_TYPE;
+        $subject->mark = Student::DEFAULT_TYPE;
+        $student->subjects()->attach($subject);
 
         return redirect('/students')->with('success', 'Student created!');
     }
@@ -103,8 +116,10 @@ class StudentsController extends Controller
      */
     public function show($id)
     {
+        //showing each student with abillity of edit and delete
         $student = Student::findOrFail($id);//student()
         $subjects = Subject::all();
+        //$student_subject = StudentSubject::where('student_id', $id)->where('reported_exam', StudentSubject::EXAM_YES)->get();
         return view('students.show')->with('student', $student)->with('subjects', $subjects);
     }
 
@@ -116,6 +131,7 @@ class StudentsController extends Controller
      */
     public function edit($id)
     {
+        //showing edit form for student
         $student = Student::findOrFail($id);
         return view('students.edit')->with('student', $student);
     }
@@ -129,6 +145,8 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        //updateing student and user
+        //WORKING
         $this->validate($request, [
           'first_name' => 'required|string|min:2|max:255',
           'last_name' => 'required|string|min:2|max:255',
@@ -136,16 +154,10 @@ class StudentsController extends Controller
           'gender' => 'required',
           'date_of_birth' => 'required|string|max:11',
           'place_of_birth' => 'required|string|max:255',
-          'personal_id_number' => 'required|integer|min:1000000000|max:9999999999',
+          'personal_id_number' => 'required|integer|min:1|max:9999999999',
           'email' => 'required|string|email|max:255|unique:students',//students
           'phone_number' => 'required|integer'
         ]);
-
-        $user = User::where('email', $request->student_email);
-        $user->name = $request->input('first_name');
-        $user->email = $request->input('email');
-        $user->type = User::DEFAULT_TYPE;
-        $user->save();
 
         $student = Student::find($id);
         $student->first_name = $request->input('first_name');
@@ -157,7 +169,14 @@ class StudentsController extends Controller
         $student->personal_id_number = $request->input('personal_id_number');
         $student->email = $request->input('email');
         $student->phone_number = $request->input('phone_number');
+
+        $email = $request->student_email;
+        $user = User::where('email', $email)->first();
+        $user->name = $request->input('first_name');
+        $user->email = $request->input('email');
+
         $student->save();
+        $user->save();
 
         return redirect('/students')->with('success', 'Student updated!');
 
@@ -171,13 +190,16 @@ class StudentsController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        //deleting student, user and student_subject fields
+        //WORKING
         $student_subject = StudentSubject::where('student_id', $id);
-        $student_subject->delete();
 
         $student = Student::findOrFail($id);
-        $student->delete();
 
         $user = User::where('email', $request->student_email);
+
+        $student_subject->delete();
+        $student->delete();
         $user->delete();
 
         return redirect('/students')->with('success', 'Student deleted!');

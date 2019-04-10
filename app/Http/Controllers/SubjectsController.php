@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
 use App\Subject;
 use App\Student;
 use App\StudentSubject;
@@ -17,6 +18,8 @@ class SubjectsController extends Controller
    */
   public function __construct()
   {
+    //revalidate stops you going back if you are logged out
+    //if you are not admin, you can just visit you profile
     $this->middleware('revalidate');
     $this->middleware('is_admin');
   }
@@ -51,6 +54,8 @@ class SubjectsController extends Controller
    */
   public function store(Request $request)
   {
+    //creating new subject
+    //WORKING
     $this->validate($request, [
       'name' => 'required|string|min:2|max:255',
       'espb' => 'required|integer|min:1|max:10',
@@ -65,6 +70,11 @@ class SubjectsController extends Controller
     $subject->professor = $request->input('professor');
     $subject->save();
 
+    $student = Student::all();
+    $subject->type = Subject::DEFAULT_TYPE;
+    $subject->mark = Student::DEFAULT_TYPE;
+    $subject->students()->attach($student);
+
     return redirect('/students')->with('success', 'Subject created!');
   }
 
@@ -76,9 +86,8 @@ class SubjectsController extends Controller
    */
   public function show($id)
   {
-      $subjects = Subject::all();
       $subject = Subject::findOrFail($id);
-      return view('subjects.show')->with('subject', $subject)->with('subjects', $subjects);
+      return view('subjects.show')->with('subject', $subject);
   }
 
   /**
@@ -102,6 +111,8 @@ class SubjectsController extends Controller
    */
   public function update(Request $request, $id)
   {
+    //updating subject
+    //WORKING
     $this->validate($request, [
       'name' => 'required|string|min:2|max:255',
       'espb' => 'required|integer|min:1|max:10',
@@ -116,7 +127,7 @@ class SubjectsController extends Controller
     $subject->professor = $request->input('professor');
     $subject->save();
 
-    return redirect()->route('students.show', [$user->id])->with('success', 'Subject updated!');
+    return redirect('/students')->with('success', 'Subject updated!');
   }
 
   /**
@@ -127,10 +138,13 @@ class SubjectsController extends Controller
    */
   public function destroy($id)
   {
+    //deleting subject and columns in student_subject table
+    //WORKING
     $student_subject = StudentSubject::where('subject_id', $id);
-    $student_subject->delete();
 
     $subject = Subject::findOrFail($id);
+
+    $student_subject->delete();
     $subject->delete();
 
     return redirect('students')->with('success', 'Subject deleted');
