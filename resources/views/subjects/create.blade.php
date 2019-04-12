@@ -22,9 +22,7 @@
         {{Form::label('professor', 'Professor')}}
         {{Form::text('professor', '', ['placeholder' => 'Professor'])}}
       </div>
-      <div>
         {{Form::submit('Create Subject')}}
-      </div>
     {!! Form::close() !!}
     </div>
   </form>

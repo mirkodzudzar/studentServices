@@ -6,8 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subject extends Model
 {
-    const DEFAULT_TYPE = 0;
-
     protected $fillable = [
       'name', 'espb', 'type', 'professor'
     ];
@@ -16,6 +14,7 @@ class Subject extends Model
     {
       return $this->belongsToMany('App\Student')
       ->withPivot('mark', 'mark')
+      ->withPivot('reported_exam', 'reported_exam')
     	->withTimestamps();
     }
 }

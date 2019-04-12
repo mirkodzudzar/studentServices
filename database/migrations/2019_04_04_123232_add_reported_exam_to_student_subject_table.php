@@ -14,7 +14,7 @@ class AddReportedExamToStudentSubjectTable extends Migration
     public function up()
     {
       Schema::table('student_subject', function($table){
-          $table->string('reported_exam')->default('yes');
+          $table->string('reported_exam')->default('no');
       });
     }
 

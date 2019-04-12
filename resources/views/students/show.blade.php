@@ -2,12 +2,7 @@
 
 @section('content')
   <div class="row">
-    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-      @if(!Auth::guest())
-        @if(Auth::user()->email == 'admin@gmail.com')
-          <a href="/students">Go Back</a>
-        @endif
-      @endif
+    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
       @include('inc.student')
       @if(!Auth::guest())
         @if(Auth::user()->email == 'admin@gmail.com')
@@ -19,10 +14,10 @@
         @endif
       @endif
     </div>
-    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
+    <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
       @if(!Auth::guest())
         @if(Auth::user()->email == 'admin@gmail.com')
-          <a href="/exams/{{$student->id}}">Edit marks</a>
+          <a href="/exams/{{$student->id}}">Edit reporting</a>
         @endif
       @endif
       <h2>Reported exams</h2>
@@ -38,6 +33,7 @@
           <th>Exem</th>
         </tr>
         @foreach($student->subjects as $subject)
+          @if($subject->pivot->reported_exam === 'yes')
             <tr>
               <td>{{$subject->id}}</td>
               <th>{{$subject->name}}</th>
@@ -45,15 +41,24 @@
               <td>{{$subject->type}}</td>
               <td>{{$subject->professor}}</td>
               <td>
-                @if($subject->pivot->mark !== 0)
-                  {{$subject->pivot->mark}}
+                @if(!Auth::guest())
+                  @if(Auth::user()->email == 'admin@gmail.com')
+                      {!!Form::open(['action' => ['ExamsController@storeMark', $student->id], 'method' => 'POST'])!!}
+                        {{Form::text('mark', $subject->pivot->mark)}}
+                        {{Form::hidden('exam_id', $subject->id)}}
+                        {{Form::submit('Enter')}}
+                      {!!Form::close()!!}
+                  @else
+                    @if($subject->pivot->mark !== 0)
+                      {{$subject->pivot->mark}}
+                    @endif
+                  @endif
                 @endif
               </td>
               <td>
-                @if($subject->pivot->reported_exam == 'yes')
-                  <p>Repotred</p>
-                @endif
+                <p>Reported</p>
               </td>
+          @endif
         @endforeach
         </tr>
       </table>

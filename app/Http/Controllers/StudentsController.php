@@ -39,7 +39,8 @@ class StudentsController extends Controller
         //showing all students and all subjects(evry student has every subject!!!)
         $students = Student::allStudents()->sortBy('department_id');
         $subjects = Subject::all();
-        return view('students.index')->with('students', $students)->with('subjects', $subjects);
+        $departments = Department::all();
+        return view('students.index')->with('students', $students)->with('subjects', $subjects)->with('departments', $departments);
     }
 
     /**

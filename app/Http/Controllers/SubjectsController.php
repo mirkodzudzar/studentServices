@@ -71,7 +71,7 @@ class SubjectsController extends Controller
     $subject->save();
 
     $student = Student::all();
-    $subject->type = Subject::DEFAULT_TYPE;
+    // $subject->type = Subject::DEFAULT_TYPE;
     $subject->mark = Student::DEFAULT_TYPE;
     $subject->students()->attach($student);
 

@@ -2,37 +2,17 @@
 
 @section('content')
   <div class="row">
-    <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
-      <a href="/students/create">Create new student</a><br><br>
-      @if(count($students) > 1)
-      <table class="table">
-        <tr>
-          <th>Department</th>
-          <th>Last name</th>
-          <th>Parent name</th>
-          <th>First name</th>
-          <th>ID</th>
-          <th>Subjects</th>
-        </tr>
-        <tr>
-          @foreach($students as $student)
-            @if($student->first_name !== 'admin')
-              <td>{{ $student->department->name }}</td>
-              <td>{{ $student->last_name }}</td>
-              <td>{{ $student->parent_name }}</td>
-              <td>{{ $student->first_name }}</td>
-              <td>{{$student->id}}</td>
-              <td><a href="/students/{{$student->id}}">Show</a></td>
-            @endif
-          </tr>
-          @endforeach
-        </table>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+      <h1>Departments</h1>
+      @if(count($departments) > 0)
+        @foreach($departments as $department)
+          {{$department->id}}. <a href="/departments/{{$department->id}}">{{$department->name}}</a><br>
+        @endforeach
       @else
-          <p>No students found</p>
+        <p>No departments found</p>
       @endif
     </div>
-    <div class="col-lg-5 col-md-5 col-sm-5 col-xs-12">
-      <a href="subjects/create">Create new subject for all students</a>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
       <h2>Subjects</h2>
       @if(count($subjects) > 0)
         @foreach ($subjects as $subject)

@@ -48,6 +48,7 @@ class Student extends Model
   {
       return $this->belongsToMany('App\Subject')
       ->withPivot('mark', 'mark')
+      ->withPivot('reported_exam', 'reported_exam')
     	->withTimestamps();
   }
 

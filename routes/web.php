@@ -29,3 +29,10 @@ Route::delete('subjects/{subject}', 'SubjectsController@destroy');
 Route::get('exams/{student}', 'ExamsController@show');
 Route::put('exams/{student}', 'ExamsController@reportExam');
 Route::post('exams/{student}', 'ExamsController@storeMark');
+
+Route::get('departments/create', 'DepartmentsController@create');
+Route::post('departments', 'DepartmentsController@store');
+Route::get('departments/{department}', 'DepartmentsController@show');
+Route::get('departments/{department}/edit', 'DepartmentsController@edit');
+Route::put('departments/{department}', 'DepartmentsController@update');
+Route::delete('departments/{department}', 'DepartmentsController@destroy');
