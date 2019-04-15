@@ -38,15 +38,41 @@ class ExamsController extends Controller
    return redirect()->route('students.show', [$id])->with('success', 'Exam reported!');
   }
 
-  public function storeMark(Request $request, $id)
+  public function storePoints(Request $request, $id)
   {
     $this->validate($request, [
-      'mark' => 'integer|min:5|max:10'
+      'points' => 'integer|min:0|max:100'
     ]);
 
     $subject_id = $request->exam_id;
     $student_subject = StudentSubject::where('student_id', $id)->where('subject_id', $subject_id)->first();
-    $student_subject->mark = $request->input('mark');;
+    $student_subject->points = $request->input('points');
+
+    if($request->input('points') >= 91)
+    {
+      $student_subject->mark = 10;
+    }
+    elseif($request->input('points') >= 81)
+    {
+      $student_subject->mark = 9;
+    }
+    elseif($request->input('points') >= 71)
+    {
+      $student_subject->mark = 8;
+    }
+    elseif($request->input('points') >= 61)
+    {
+      $student_subject->mark = 7;
+    }
+    elseif($request->input('points') >= 51)
+    {
+      $student_subject->mark = 6;
+    }
+    else
+    {
+      $student_subject->mark = 5;
+    }
+
     $student_subject->save();
 
     return redirect()->back()->with('success', 'Mark edited!');

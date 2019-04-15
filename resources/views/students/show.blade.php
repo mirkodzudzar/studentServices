@@ -29,6 +29,7 @@
           <th>ESPB</th>
           <th>Type</th>
           <th>Professor</th>
+          <th>Points</th>
           <th>Mark</th>
           <th>Exem</th>
         </tr>
@@ -43,18 +44,22 @@
               <td>
                 @if(!Auth::guest())
                   @if(Auth::user()->email == 'admin@gmail.com')
-                      {!!Form::open(['action' => ['ExamsController@storeMark', $student->id], 'method' => 'POST'])!!}
-                        {{Form::text('mark', $subject->pivot->mark)}}
+                      {!!Form::open(['action' => ['ExamsController@storePoints', $student->id], 'method' => 'POST'])!!}
+                        {{Form::text('points', $subject->pivot->points)}}
                         {{Form::hidden('exam_id', $subject->id)}}
                         {{Form::submit('Enter')}}
                       {!!Form::close()!!}
                   @else
-                    @if($subject->pivot->mark !== 0)
-                      {{$subject->pivot->mark}}
-                    @endif
+                  @if($subject->pivot->points !== 0)
+                    {{$subject->pivot->points}}
+                  @endif
                   @endif
                 @endif
               </td>
+              <td>
+                @if($subject->pivot->mark !== 0)
+                  {{$subject->pivot->mark}}
+                @endif
               <td>
                 <p>Reported</p>
               </td>

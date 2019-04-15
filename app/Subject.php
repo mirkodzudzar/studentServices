@@ -13,6 +13,7 @@ class Subject extends Model
     public function students()
     {
       return $this->belongsToMany('App\Student')
+      ->withPivot('points', 'points')
       ->withPivot('mark', 'mark')
       ->withPivot('reported_exam', 'reported_exam')
     	->withTimestamps();
