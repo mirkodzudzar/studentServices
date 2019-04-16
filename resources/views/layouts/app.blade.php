@@ -35,14 +35,13 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="/students">
-                        {{ config('app.name', 'Student Services') }}
-                    </a>
                     @if(!Auth::guest())
                       @if(Auth::user()->type !== 'admin')
+                        <a class="navbar-brand" href="/students/{{$student->id}}">{{ config('app.name', 'Student Services') }}</a>
                         <a class="navbar-brand" href="/students/{{$student->id}}">Subjects</a>
                         <a class="navbar-brand" href="/exams/{{$student->id}}">Exams</a>
                       @elseif(Auth::user()->type === 'admin')
+                        <a class="navbar-brand" href="/students">{{ config('app.name', 'Student Services') }}</a>
                         <a class="navbar-brand" href="/students/create">Create student</a>
                         <a class="navbar-brand" href="/subjects/create">Create subject</a>
                         <a class="navbar-brand" href="/departments/create">Create department</a>

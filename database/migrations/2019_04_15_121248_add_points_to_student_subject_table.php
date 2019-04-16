@@ -14,7 +14,7 @@ class AddPointsToStudentSubjectTable extends Migration
     public function up()
     {
       Schema::table('student_subject', function($table){
-          $table->integer('points');
+          $table->integer('points')->default(0);
       });
     }
 

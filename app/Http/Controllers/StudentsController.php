@@ -104,6 +104,7 @@ class StudentsController extends Controller
         $subject = Subject::all();
         $user->type = User::DEFAULT_TYPE;
         $subject->mark = Student::DEFAULT_TYPE;
+        $subject->points = Student::DEFAULT_TYPE;
         $student->subjects()->attach($subject);
 
         return redirect('/students')->with('success', 'Student created!');
