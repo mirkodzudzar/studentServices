@@ -9,6 +9,21 @@ use App\Department;
 
 class DepartmentsController extends Controller
 {
+  /**
+   * Create a new controller instance.
+   *
+   * @return void
+   */
+  public function __construct()
+  {
+    //revalidate stops you going back if you are logged out
+    //auth stops unlloged users to do enything
+    //if you are not admin, you can just visit you profile
+    $this->middleware('revalidate');
+    $this->middleware('auth');
+    $this->middleware('is_admin');
+  }
+
   public function create()
   {
       return view('departments.create');
